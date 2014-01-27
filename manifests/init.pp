@@ -1,31 +1,14 @@
-# == Class: replica-set-verifier
-#
-# Full description of class set-verifier here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# == Class: rsv
+# This class provisioning the mongo-c-driver, libbson and replica_set_verifier service
 #
 # === Examples
 #
-#  class { replica-set-verifier:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  class { rsv:
 #  }
+#
+#  or
+#
+#  include rsv
 #
 # === Authors
 #
@@ -35,10 +18,49 @@
 #
 # Copyright 2014 Johan Tique.
 #
-class replica-set-verifier inherits replica-set-verifier::params{
-	anchor{ 'replica-set-verifier::begin':
-		before => Anchor['replica-set-verifier::install::begin'],
+class rsv inherits rsv::params{
+    include rsv::install
+
+	anchor{ 'rsv::begin':
+		before => Anchor["rsv::install::begin"],
 	}
 
-	anchor { 'replica-set-verifier::end': }
+	anchor { 'rsv::end': }
+
+    file {
+      "/etc/replica_set_verifier.conf":
+        content => template('rsv/replica_set_verifier.conf.erb'),
+        mode    => '0755',
+        require => Class['rsv::install'];
+      "/etc/init.d/replica_set_verifier":
+        content => template('rsv/replica_set_verifier-init.conf.erb'),
+        mode    => '0755',
+        require => Class['rsv::install'];
+      "/etc/init.d/serviwer":
+        content => template('rsv/serviwer-init.conf.erb'),
+        mode    => '0755',
+        require => Class['rsv::install'],
+    }
+
+    service { "replica_set_verifier":
+      enable     => 'true',
+      ensure     => 'running',
+      hasstatus  => true,
+      hasrestart => true,
+      require    => [
+        File["/etc/replica_set_verifier.conf", "/etc/init.d/replica_set_verifier"],
+      ],
+      before     => Anchor['rsv::end']
+    }
+
+    service { "serviwer":
+      enable     => 'true',
+      ensure     => 'running',
+      hasstatus  => true,
+      hasrestart => true,
+      require    => [
+      File["/etc/init.d/serviwer"],
+      ],
+      before     => Anchor['rsv::end']
+    }
 }
