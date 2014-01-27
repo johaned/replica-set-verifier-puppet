@@ -1,16 +1,12 @@
-set-verifier
+replica-set-verifier for Puppet
+===============================
 
-This is the set-verifier module.
+This is the replica-set-verifier module.
 
 License
 -------
-
+Apache License, Version 2.0
 
 Contact
 -------
-
-
-Support
--------
-
-Please log tickets and issues at our [Projects site](http://projects.example.com)
+Johan Tique, Product Engineer at Codescrum SAS

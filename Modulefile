@@ -1,10 +1,10 @@
 name    'replica-set-verifier'
 version '0.1.0'
-source 'UNKNOWN'
-author 'replica'
+source 'https://github.com/Johaned/replica-set-verifier-puppet'
+author 'Johan Tique'
 license 'Apache License, Version 2.0'
-summary 'UNKNOWN'
-description 'UNKNOWN'
+summary 'This module install LIBSON, MONGO-C-Driver and replica-set-verifier service'
+description 'Puppet module for replica-set-verifier'
 project_page 'UNKNOWN'
 
 ## Add dependencies, if any:
