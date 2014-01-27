@@ -6,6 +6,4 @@ license 'Apache License, Version 2.0'
 summary 'This module install LIBSON, MONGO-C-Driver and replica-set-verifier service'
 description 'Puppet module for replica-set-verifier'
 project_page 'UNKNOWN'
-
-## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+dependency   'puppetlabs/stdlib', '>= 2.2.1'

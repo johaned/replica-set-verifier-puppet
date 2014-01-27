@@ -1,4 +1,4 @@
-# == Class: set-verifier
+# == Class: replica-set-verifier
 #
 # Full description of class set-verifier here.
 #
@@ -23,19 +23,22 @@
 #
 # === Examples
 #
-#  class { set-verifier:
+#  class { replica-set-verifier:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Johan Tique <johan.tique@codescrum.com>
 #
 # === Copyright
 #
-# Copyright 2014 Your name here, unless otherwise noted.
+# Copyright 2014 Johan Tique.
 #
-class replica-set-verifier {
+class replica-set-verifier inherits replica-set-verifier::params{
+	anchor{ 'replica-set-verifier::begin':
+		before => Anchor['replica-set-verifier::install::begin'],
+	}
 
-
+	anchor { 'replica-set-verifier::end': }
 }
